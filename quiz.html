@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎉 Trivia Caribeña de Barranquilla</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #FFD700, #FF8C00, #FF4500);
+      margin: 0;
+      padding: 20px;
+      color: #2c3e50;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 20px auto;
+    }
+
+    .registro-container, .trivia-container, .ranking-container {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .tarjeta {
+      background: #FFE4B5;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      font-size: 1.2em;
+      color: #8B4513;
+      border: 3px dashed #FF6347;
+    }
+
+    .opciones button {
+      display: block;
+      width: 90%;
+      margin: 8px auto;
+      padding: 12px;
+      background: #4682B4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .opciones button:hover {
+      background: #5F9EA0;
+    }
+
+    .mensaje {
+      margin-top: 15px;
+      font-weight: bold;
+      min-height: 24px;
+    }
+
+    .correcto { color: green; }
+    .incorrecto { color: red; }
+
+    #ranking ol {
+      list-style-type: none;
+      padding: 0;
+      text-align: left;
+    }
+
+    #ranking li {
+      background: #FFF8DC;
+      margin: 8px 0;
+      padding: 10px;
+      border-left: 5px solid #FFD700;
+    }
+
+    input[type="text"] {
+      padding: 12px;
+      width: 80%;
+      margin-bottom: 15px;
+      border: 2px solid #FFA500;
+      border-radius: 10px;
+      font-size: 1em;
+    }
+
+    button {
+      background: #FF6347;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 1.1em;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #FF4500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="text-align:center; color:#8B4513;">🌴 ¡Trivia Caribeña de Barranquilla! 🌴</h1>
+
+    <!-- Registro -->
+    <div id="registro" class="registro-container">
+      <h2>¡Regístrate para jugar! 🎊</h2>
+      <form id="formRegistro">
+        <input type="text" id="nombreJugador" placeholder="Escribe tu nombre" required />
+        <br />
+        <button type="submit">¡Jugar!</button>
+      </form>
+    </div>
+
+    <!-- Trivia -->
+    <div id="trivia" class="trivia-container" style="display:none;">
+      <h2>¿Qué tanto sabes de Barranquilla? 🧠</h2>
+      <div id="tarjetaPregunta" class="tarjeta"></div>
+      <div id="opciones" class="opciones"></div>
+      <div id="mensaje" class="mensaje"></div>
+      <button id="siguientePregunta" style="display:none;">Siguiente pregunta ➡️</button>
+    </div>
+
+    <!-- Ranking -->
+    <div id="ranking" class="ranking-container" style="display:none;">
+      <h2>🏆 Ranking de Expertos en Barranquilla</h2>
+      <ol id="listaRanking"></ol>
+      <button onclick="location.reload()">Jugar de nuevo</button>
+    </div>
+  </div>
+
+  <script>
+    // Detectar si localStorage está disponible
+    let useLocalStorage = false;
+    try {
+      localStorage.setItem('test', 'test');
+      localStorage.removeItem('test');
+      useLocalStorage = true;
+    } catch (e) {
+      console.warn("localStorage no disponible. Usando memoria temporal.");
+    }
+
+    // Preguntas basadas en el PDF
+    const preguntas = [
+      {
+        pregunta: "¿Dónde se encuentra 'La Ventana del Mundo'?",
+        opciones: ["Barrio El Prado", "Barrio San José", "Puerto Colombia", "Barrio Villas del Sol"],
+        correcta: 0
+      },
+      {
+        pregunta: "¿Qué río desemboca en Bocas de Ceniza?",
+        opciones: ["Río Cauca", "Río Magdalena", "Río Sinú", "Río Atrato"],
+        correcta: 1
+      },
+      {
+        pregunta: "¿Qué equipo de fútbol representa a Barranquilla?",
+        opciones: ["Millonarios", "América de Cali", "Atlético Junior", "Deportivo Cali"],
+        correcta: 2
+      },
+      {
+        pregunta: "¿En qué barrio está el Parque Cultural del Caribe?",
+        opciones: ["El Prado", "San José", "El Recreo", "Villas del Sol"],
+        correcta: 1
+      },
+      {
+        pregunta: "¿Qué escritor tiene una estatua en el Museo del Caribe?",
+        opciones: ["Julio Cortázar", "Mario Vargas Llosa", "Gabriel García Márquez", "Isabel Allende"],
+        correcta: 2
+      },
+      {
+        pregunta: "¿Dónde se encuentra el antiguo edificio de la Aduana?",
+        opciones: ["Barrio El Prado", "Centro histórico", "Puerto Colombia", "Castillo de Salgar"],
+        correcta: 1
+      },
+      {
+        pregunta: "¿Qué celebración es famosa en Barranquilla en febrero/marzo?",
+        opciones: ["Festival de Cine", "Feria de Manizales", "Carnaval de Barranquilla", "Festival de Teatro"],
+        correcta: 2
+      },
+      {
+        pregunta: "¿Qué actividad puedes hacer en el Volcán de Totumo?",
+        opciones: ["Nadar en el mar", "Subir una montaña", "Baño de lodo medicinal", "Ver aves exóticas"],
+        correcta: 2
+      }
+    ];
+
+    let jugadorActual = "";
+    let puntaje = 0;
+    let indicePregunta = 0;
+
+    // Registro
+    document.getElementById("formRegistro").addEventListener("submit", (e) => {
+      e.preventDefault();
+      jugadorActual = document.getElementById("nombreJugador").value.trim();
+      if (jugadorActual) {
+        document.getElementById("registro").style.display = "none";
+        document.getElementById("trivia").style.display = "block";
+        mostrarPregunta();
+      }
+    });
+
+    function mostrarPregunta() {
+      if (indicePregunta >= preguntas.length) {
+        finalizarJuego();
+        return;
+      }
+
+      const p = preguntas[indicePregunta];
+      document.getElementById("tarjetaPregunta").textContent = p.pregunta;
+      const contenedorOpciones = document.getElementById("opciones");
+      contenedorOpciones.innerHTML = "";
+      p.opciones.forEach((opcion, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = opcion;
+        btn.onclick = () => verificarRespuesta(i);
+        contenedorOpciones.appendChild(btn);
+      });
+      document.getElementById("mensaje").textContent = "";
+      document.getElementById("siguientePregunta").style.display = "none";
+    }
+
+    function verificarRespuesta(seleccionada) {
+      const esCorrecta = seleccionada === preguntas[indicePregunta].correcta;
+      const mensaje = document.getElementById("mensaje");
+      if (esCorrecta) {
+        mensaje.textContent = "¡Correcto! 🎉";
+        mensaje.className = "mensaje correcto";
+        puntaje++;
+      } else {
+        mensaje.textContent = "Incorrecto 😢";
+        mensaje.className = "mensaje incorrecto";
+      }
+      document.querySelectorAll("#opciones button").forEach(b => b.disabled = true);
+      document.getElementById("siguientePregunta").style.display = "inline-block";
+    }
+
+    document.getElementById("siguientePregunta").addEventListener("click", () => {
+      indicePregunta++;
+      mostrarPregunta();
+    });
+
+    function finalizarJuego() {
+      document.getElementById("trivia").style.display = "none";
+
+      // Obtener ranking
+      let ranking = [];
+      if (useLocalStorage) {
+        ranking = JSON.parse(localStorage.getItem("rankingBaq")) || [];
+      } else {
+        // Simular ranking en memoria (solo para esta sesión)
+        if (!window.tempRanking) window.tempRanking = [];
+        ranking = window.tempRanking;
+      }
+
+      ranking.push({ nombre: jugadorActual, puntaje });
+      ranking.sort((a, b) => b.puntaje - a.puntaje);
+
+      if (useLocalStorage) {
+        localStorage.setItem("rankingBaq", JSON.stringify(ranking));
+      } else {
+        window.tempRanking = ranking;
+      }
+
+      mostrarRanking(ranking);
+    }
+
+    function mostrarRanking(ranking) {
+      const lista = document.getElementById("listaRanking");
+      lista.innerHTML = "";
+      ranking.slice(0, 10).forEach((jugador, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${i + 1}. ${jugador.nombre} — ${jugador.puntaje}/${preguntas.length} pts`;
+        lista.appendChild(li);
+      });
+      document.getElementById("ranking").style.display = "block";
+    }
+  </script>
+</body>
+</html>
+
