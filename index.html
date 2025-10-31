@@ -7,7 +7,8 @@
   <style>
     body {
       font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: linear-gradient(135deg, #FFD700, #FF8C00, #FF4500);
+      background-image: url('A-A-MALLORQUIN-scaled.jpeg');
+      /* background: linear-gradient(135deg, #FFD700, #FF8C00, #FF4500); */
       margin: 0;
       padding: 20px;
       color: #2c3e50;
@@ -144,48 +145,49 @@
     }
 
     // Preguntas basadas en el PDF
-    const preguntas = [
-      {
-        pregunta: "¿Dónde se encuentra 'La Ventana del Mundo'?",
-        opciones: ["Barrio El Prado", "Barrio San José", "Puerto Colombia", "Barrio Villas del Sol"],
-        correcta: 2
-      },
-      {
-        pregunta: "¿Qué río desemboca en Bocas de Ceniza?",
-        opciones: ["Río Cauca", "Río Magdalena", "Río Sinú", "Río Atrato"],
-        correcta: 1
-      },
-      {
-        pregunta: "¿Qué equipo de fútbol representa a Barranquilla?",
-        opciones: ["Millonarios", "América de Cali", "Atlético Junior", "Deportivo Cali"],
-        correcta: 2
-      },
-      {
-        pregunta: "¿En qué barrio está el Parque Cultural del Caribe?",
-        opciones: ["El Prado", "San José", "El Recreo", "Villas del Sol"],
-        correcta: 1
-      },
-      {
-        pregunta: "¿Qué escritor tiene una estatua en el Museo del Caribe?",
-        opciones: ["Julio Cortázar", "Mario Vargas Llosa", "Gabriel García Márquez", "Isabel Allende"],
-        correcta: 2
-      },
-      {
-        pregunta: "¿Dónde se encuentra el antiguo edificio de la Aduana?",
-        opciones: ["Barrio El Prado", "Centro histórico", "Puerto Colombia", "Castillo de Salgar"],
-        correcta: 1
-      },
-      {
-        pregunta: "¿Qué celebración es famosa en Barranquilla en febrero/marzo?",
-        opciones: ["Festival de Cine", "Feria de Manizales", "Carnaval de Barranquilla", "Festival de Teatro"],
-        correcta: 2
-      },
-      {
-        pregunta: "¿Qué actividad puedes hacer en el Volcán de Totumo?",
-        opciones: ["Nadar en el mar", "Subir una montaña", "Baño de lodo medicinal", "Ver aves exóticas"],
-        correcta: 2
-      }
-    ];
+   const preguntas = [
+  {
+    pregunta: "¿Dónde se encuentra la Ciénaga de Mallorquín?",
+    opciones: ["Se sitúa entre los barrios La Playa y Las Flores en el distrito de Barranquilla. ", "En la zona norte, cerca al mar", "En el centro de la ciudad", "Cerca del Estadio Metropolitano"],
+    correcta: 0
+  },
+  {
+    pregunta: "¿Qué se puede hacer en la Ciénaga de Mallorquín?",
+    opciones: ["Nadar en piscinas", "Ver aves y pasear en kayak", "Ver partidos de fútbol", "Hacer compras"],
+    correcta: 1
+  },
+  {
+    pregunta: "¿Qué es el Gran Malecón del Río?",
+    opciones: ["Un centro comercial", "Un parque industrial", "Un paseo turístico junto al río Magdalena", "Un estadio deportivo"],
+    correcta: 2
+  },
+  {
+    pregunta: "¿Qué río bordea el Gran Malecón del Río?",
+    opciones: ["Río Cauca", "Río Atrato", "Río Sinú", "Río Magdalena"],
+    correcta: 3
+  },
+  {
+    pregunta: "¿Qué representa el monumento 'La Ventana al Mundo'?",
+    opciones: ["La entrada al Carnaval", "representar el monumento de Barranquilla, Colombia, como símbolo de la ciudad, su progreso, cultura y conexión global", "La historia colonial", "El deporte barranquillero"],
+    correcta: 1
+  },
+  {
+    pregunta: "¿De qué colores es principalmente 'La Ventana al Mundo'?",
+    opciones: ["Rojo y blanco", "Azul y verde", "Multicolor con tonos vivos, rojo, amarillo, verde y azul", "Amarillo y negro"],
+    correcta: 2
+  },
+  {
+    pregunta: "¿Qué tipo de eventos se realizan en el Estadio Metropolitano?",
+    opciones: ["Conciertos y partidos de fútbol", "Ferias de arte", "Carreras de autos", "Exposiciones de moda"],
+    correcta: 0
+  },
+  {
+    pregunta: "¿Cuál es el nombre completo del Estadio Metropolitano?",
+    opciones: ["Estadio Julio Comesaña", "Estadio Eduardo Santos", "Estadio Mario Yepes", "Estadio Roberto Meléndez"],
+    correcta: 3
+  }
+];
+
 
     let jugadorActual = "";
     let puntaje = 0;
